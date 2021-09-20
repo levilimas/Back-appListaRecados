@@ -12,58 +12,58 @@ app.use(express_1.default.json());
 app.use(express_1.default.urlencoded({ extended: false }));
 app.use(cors_1.default());
 dotenv_1.default.config();
-const recados = [];
-app.post('/recados', (request, response) => {
-    const { descricao, detalhamento } = request.body;
-    const descricaoRecados = {
+const scraps = [];
+app.post('/scraps', (request, response) => {
+    const { description, detailing } = request.body;
+    const descriptionScraps = {
         id: uuid_1.v4(),
-        descricao,
-        detalhamento,
+        description,
+        detailing,
     };
-    recados.push(descricaoRecados);
+    scraps.push(descriptionScraps);
     return response.json({
-        dados: descricaoRecados
+        data: descriptionScraps
     });
 });
-app.put('/recados/:id', (request, response) => {
-    const { descricao, detalhamento } = request.body;
+app.put('/scraps/:id', (request, response) => {
+    const { description, detailing } = request.body;
     const { id } = request.params;
-    const indexRecado = recados.findIndex((recadosAut) => {
-        return recadosAut.id === id;
+    const indexScrap = scraps.findIndex((scrapsAut) => {
+        return scrapsAut.id === id;
     });
-    recados[indexRecado].descricao = descricao;
-    recados[indexRecado].detalhamento = detalhamento;
+    scraps[indexScrap].description = description;
+    scraps[indexScrap].detailing = detailing;
     return response.json({
-        dados: recados
+        data: scraps
     });
 });
-app.get('/recados', (request, response) => {
-    return response.json(recados);
+app.get('/scraps', (request, response) => {
+    return response.json(scraps);
 });
-app.get('/recados/:id', (request, response) => {
+app.get('/scraps/:id', (request, response) => {
     const { id } = request.params;
     if (!id) {
         return response.status(400).json({
-            mensagem: 'Recado inválido'
+            message: 'invalid Scrap'
         });
     }
-    const buscarRecados = recados.find((recado) => recado.id == id);
-    if (!buscarRecados) {
+    const searchScraps = scraps.find((scrap) => scrap.id == id);
+    if (!searchScraps) {
         return response.status(404).json({
-            mensagem: 'recado não encontrado'
+            message: 'scrap not found'
         });
     }
     return response.json({
-        buscarRecados
+        searchScraps
     });
 });
-app.delete('/recados', (request, response) => {
+app.delete('/scraps', (request, response) => {
     const { id } = request.body;
-    const buscarRecados = recados.findIndex((recado) => recado.id == id);
-    recados.splice(buscarRecados, 1);
+    const searchScraps = scraps.findIndex((scrap) => scrap.id == id);
+    scraps.splice(searchScraps, 1);
     return response.sendStatus(204);
 });
 const port = process.env.PORT || 8080;
 app.listen(port, () => {
-    console.log('API rodando...');
+    console.log('API running...');
 });

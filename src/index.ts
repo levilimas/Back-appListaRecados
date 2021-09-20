@@ -8,56 +8,56 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cors());
 dotenv.config();
-const recados: Array <any> = [];
-app.post('/recados', (request: Request, response: Response) => {
-    const { descricao, detalhamento } = request.body;
-    const descricaoRecados = { 
+const scraps: Array <any> = [];
+app.post('/scraps', (request: Request, response: Response) => {
+    const { description, detailing } = request.body;
+    const descriptionScraps = { 
         id: uuidGenerator(),
-        descricao,
-        detalhamento,
+        description,
+        detailing,
     }
-    recados.push(descricaoRecados);
+    scraps.push(descriptionScraps);
     return response.json({
-        dados: descricaoRecados
+        data: descriptionScraps
     });
 });
-app.put('/recados/:id', (request: Request, response: Response) => {
-    const { descricao, detalhamento } = request.body;
+app.put('/scraps/:id', (request: Request, response: Response) => {
+    const { description, detailing } = request.body;
     const { id } = request.params;
-    const indexRecado = recados.findIndex((recadosAut) => {
-        return recadosAut.id === id
+    const indexScrap = scraps.findIndex((scrapsAut) => {
+        return scrapsAut.id === id
     });
-    recados[indexRecado].descricao = descricao;
-    recados[indexRecado].detalhamento = detalhamento;
+    scraps[indexScrap].description = description;
+    scraps[indexScrap].detailing = detailing;
     return response.json({
-     dados: recados
+     data: scraps
     });
 });
-app.get('/recados', (request: Request, response: Response) => {
+app.get('/scraps', (request: Request, response: Response) => {
  
-    return response.json(recados);
+    return response.json(scraps);
 });
-app.get('/recados/:id', (request: Request, response: Response) => {
+app.get('/scraps/:id', (request: Request, response: Response) => {
     const { id } = request.params;
     if (!id) {
         return response.status(400).json({
-            mensagem: 'Recado inválido'
+           message: 'Scrap invalid'
         });
     }
-    const buscarRecados = recados.find((recado: any) => recado.id == id);
-    if (!buscarRecados) {
+    const searchScraps = scraps.find((Scrap: any) => Scrap.id == id);
+    if (!searchScraps) {
         return response.status(404).json({
-            mensagem: 'recado não encontrado'
+           message: 'Scrap não encontrado'
         });
     }
     return response.json({
-        buscarRecados
+        searchScraps
     });
 });
-app.delete('/recados', (request: Request, response: Response) => {
+app.delete('/scraps', (request: Request, response: Response) => {
     const { id } = request.body;
-    const buscarRecados = recados.findIndex((recado: any) => recado.id == id);
-    recados.splice(buscarRecados, 1);
+    const searchScraps = scraps.findIndex((Scrap: any) => Scrap.id == id);
+    scraps.splice(searchScraps, 1);
     return response.sendStatus(204);
 });
 const port = process.env.PORT || 8080;
